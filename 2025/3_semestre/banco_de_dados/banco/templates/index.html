@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Lista de Usuários</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f4f6f8;
+            color: #333;
+        }
+        h1 {
+            color: #007bff;
+        }
+        a, button {
+            background-color: #007bff;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        a:hover, button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Usuários</h1>
+    <a href="{{ url_for('adicionar') }}">Adicionar Novo Usuário</a>
+    <button id="btnAtualizar">Atualizar</button>
+
+    <table>
+        <tr>
+            <th>ID</th><th>Nome</th><th>Email</th><th>Senha</th><th>Ações</th>
+        </tr>
+        {% for user in usuarios %}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>{{ user[2] }}</td>
+            <td>
+                <span id="senha-{{ user[0] }}" data-senha="{{ user[3] }}" data-hidden="true">••••••••</span>
+                <button onclick="toggleSenha('{{ user[0] }}')">Mostrar</button>
+            </td>
+            <td>
+                <a href="{{ url_for('editar', id_usuario=user[0]) }}">Editar</a> |
+                <a href="{{ url_for('deletar', id_usuario=user[0]) }}" onclick="return confirm('Confirma exclusão?')">Deletar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        document.getElementById('btnAtualizar').onclick = function() {
+            location.href = "{{ url_for('index') }}";
+        };
+
+        function toggleSenha(id) {
+            const span = document.getElementById('senha-' + id);
+            const hidden = span.getAttribute('data-hidden') === 'true';
+            if (hidden) {
+                span.textContent = span.getAttribute('data-senha');
+                span.setAttribute('data-hidden', 'false');
+            } else {
+                span.textContent = '••••••••';
+                span.setAttribute('data-hidden', 'true');
+            }
+        }
+    </script>
+</body>
+</html>

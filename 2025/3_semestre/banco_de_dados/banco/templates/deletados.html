@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Usuários Deletados</title>
+</head>
+<body>
+    <h1>Usuários Deletados</h1>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <th>ID</th><th>Nome</th><th>Email</th><th>Senha</th><th>Tempo Restante</th>
+        </tr>
+        {% for user in deletados %}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>{{ user[2] }}</td>
+            <td>{{ user[3] }}</td>
+            <td>
+                {% set deletado_em = user[4] %}
+                {% set tempo_limite = deletado_em + timedelta(days=7) %}
+                {% set restante = tempo_limite - agora %}
+                {% if restante.total_seconds() > 0 %}
+                    {{ restante.days }} dias, {{ (restante.seconds // 3600) % 24 }}h {{ (restante.seconds // 60) % 60 }}m
+                {% else %}
+                    Expirado
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{{ url_for('index') }}"></a>
+</body>
+</html>
