@@ -9,7 +9,7 @@ def atualizar_tabela():
         tree.delete(item)
     usuarios = listar_usuarios()
     for usuario in usuarios:
-        # Mostra a senha oculta na tabela
+        
         tree.insert("", "end", values=(usuario[0], usuario[1], usuario[2], "••••••"))
 
 def toggle_senha():
@@ -23,7 +23,7 @@ def toggle_senha():
         label_senha_real.config(text="Senha: ••••••")
         senha_mostrada = False
     else:
-        # Busca a senha real do usuário no banco
+
         usuarios = listar_usuarios()
         senha_real = None
         for usuario in usuarios:
